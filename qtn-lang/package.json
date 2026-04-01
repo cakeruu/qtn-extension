@@ -1,4 +1,8 @@
 {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cakeruu/qtn-extension.git"
+  },
   "name": "qtn-language",
   "displayName": "QTN Language",
   "description": "Support for .qtn files with qtnd diagnostics",
