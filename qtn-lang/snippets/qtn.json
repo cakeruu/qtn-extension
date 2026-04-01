@@ -1,0 +1,176 @@
+{
+  "Component": {
+    "prefix": [
+      "component",
+      "comp"
+    ],
+    "body": [
+      "component ${1:Name} {",
+      "  ${2:FP Value;}",
+      "}"
+    ],
+    "description": "Create a QTN component"
+  },
+  "Singleton Component": {
+    "prefix": [
+      "singleton",
+      "scomp"
+    ],
+    "body": [
+      "singleton component ${1:Name} {",
+      "  ${2:int Tick;}",
+      "}"
+    ],
+    "description": "Create a QTN singleton component"
+  },
+  "Struct": {
+    "prefix": [
+      "struct",
+      "st"
+    ],
+    "body": [
+      "struct ${1:Name} {",
+      "  ${2:FP Value;}",
+      "}"
+    ],
+    "description": "Create a QTN struct"
+  },
+  "Enum": {
+    "prefix": [
+      "enum"
+    ],
+    "body": [
+      "enum ${1:Name} : ${2:byte} {",
+      "  ${3:Value0 = 0},",
+      "  ${4:Value1 = 1},",
+      "}"
+    ],
+    "description": "Create a QTN enum"
+  },
+  "Flags": {
+    "prefix": [
+      "flags"
+    ],
+    "body": [
+      "flags ${1:Name} : ${2:byte} {",
+      "  ${3:None = 0},",
+      "  ${4:FlagA = 1},",
+      "  ${5:FlagB = 2},",
+      "}"
+    ],
+    "description": "Create a QTN flags enum"
+  },
+  "Union": {
+    "prefix": [
+      "union"
+    ],
+    "body": [
+      "union ${1:Name} {",
+      "  struct ${2:TypeA} ${3:A};",
+      "  struct ${4:TypeB} ${5:B};",
+      "}"
+    ],
+    "description": "Create a QTN union"
+  },
+  "Bitset": {
+    "prefix": [
+      "bitset"
+    ],
+    "body": "bitset[${1:256}] ${2:Name};",
+    "description": "Create a QTN bitset declaration"
+  },
+  "Input Block": {
+    "prefix": [
+      "input"
+    ],
+    "body": [
+      "input {",
+      "  ${1:FPVector2 Movement;}",
+      "  button ${2:Fire};",
+      "}"
+    ],
+    "description": "Create QTN input block"
+  },
+  "Signal": {
+    "prefix": [
+      "signal"
+    ],
+    "body": "signal ${1:OnEvent}(${2:FP value, entity_ref target});",
+    "description": "Create a QTN signal"
+  },
+  "Event": {
+    "prefix": [
+      "event"
+    ],
+    "body": [
+      "event ${1:Name} {",
+      "  ${2:FP Value;}",
+      "}"
+    ],
+    "description": "Create a QTN event"
+  },
+  "Synced Event": {
+    "prefix": [
+      "sevent"
+    ],
+    "body": [
+      "synced event ${1:Name} {",
+      "  ${2:entity_ref Target;}",
+      "}"
+    ],
+    "description": "Create a synced QTN event"
+  },
+  "Global Block": {
+    "prefix": [
+      "global"
+    ],
+    "body": [
+      "global {",
+      "  ${1:FP Gravity;}",
+      "}"
+    ],
+    "description": "Create QTN global block"
+  },
+  "Asset": {
+    "prefix": [
+      "asset"
+    ],
+    "body": "asset ${1:AssetType};",
+    "description": "Create QTN asset declaration"
+  },
+  "Import": {
+    "prefix": [
+      "import"
+    ],
+    "body": "import ${1:My.Namespace.Type};",
+    "description": "Create QTN import"
+  },
+  "Import Struct": {
+    "prefix": [
+      "importstruct"
+    ],
+    "body": "import struct ${1:Foo}(${2:12});",
+    "description": "Create QTN import struct declaration"
+  },
+  "Using": {
+    "prefix": [
+      "using"
+    ],
+    "body": "using ${1:My.Namespace};",
+    "description": "Create QTN using declaration"
+  },
+  "Define": {
+    "prefix": [
+      "define"
+    ],
+    "body": "#define ${1:NAME} ${2:value}",
+    "description": "Create QTN #define directive"
+  },
+  "Pragma": {
+    "prefix": [
+      "pragma"
+    ],
+    "body": "#pragma ${1:max_players} ${2:8}",
+    "description": "Create QTN #pragma directive"
+  }
+}

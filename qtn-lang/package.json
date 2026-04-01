@@ -1,0 +1,88 @@
+{
+  "name": "qtn-language",
+  "displayName": "QTN Language",
+  "description": "Support for .qtn files with qtnd diagnostics",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.93.1"
+  },
+  "main": "./dist/extension.js",
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "qtn",
+        "aliases": [
+          "QTN",
+          "qtn"
+        ],
+        "extensions": [
+          ".qtn"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "qtn",
+        "scopeName": "source.qtn",
+        "path": "./syntaxes/qtn.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "qtn",
+        "path": "./snippets/qtn.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "qtn.showOutput",
+        "title": "Show Output",
+        "category": "QTN"
+      },
+      {
+        "command": "qtn.restartQtndServer",
+        "title": "Restart Qtnd Server",
+        "category": "QTN"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "vsix": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.93.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@vscode/vsce": "3.2.1",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "esbuild": "^0.24.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}

@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.16)
+project(qtn_tools CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(MSVC)
+    add_compile_options(/W4 /WX)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -Wno-unused-parameter)
+endif()
+
+add_library(qtn_lib STATIC
+    src/lexer.cpp
+    src/ast.cpp
+    src/parser.cpp
+    src/reporter.cpp
+)
+target_include_directories(qtn_lib PUBLIC src)
+
+add_executable(qtn src/qtn_cli.cpp)
+target_link_libraries(qtn PRIVATE qtn_lib)
+
+add_executable(qtnd src/qtnd.cpp)
+target_link_libraries(qtnd PRIVATE qtn_lib)
+
+if(WIN32)
+    target_link_libraries(qtnd PRIVATE ws2_32)
+endif()
+
+install(TARGETS qtn qtnd RUNTIME DESTINATION bin)

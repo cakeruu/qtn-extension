@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "QTN",
+  "scopeName": "source.qtn",
+  "patterns": [
+    {
+      "match": "//.*$",
+      "name": "comment.line.double-slash.qtn"
+    },
+    {
+      "begin": "/\\*",
+      "end": "\\*/",
+      "name": "comment.block.qtn"
+    },
+    {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.qtn",
+      "patterns": [
+        {
+          "match": "\\\\.",
+          "name": "constant.character.escape.qtn"
+        }
+      ]
+    },
+    {
+      "match": "^\\s*#\\s*(define|pragma)\\b",
+      "name": "keyword.control.directive.qtn"
+    },
+    {
+      "match": "(\\[\\s*)([A-Za-z_][A-Za-z0-9_]*)(?=\\s*(?:\\(|\\]))",
+      "captures": {
+        "1": {
+          "name": "punctuation.section.block.qtn"
+        },
+        "2": {
+          "name": "entity.name.type.qtn"
+        }
+      }
+    },
+    {
+      "match": "\\[(?:[^\\[\\]\\n]|\\([^\\)]*\\))*\\]",
+      "name": "meta.annotation.qtn"
+    },
+    {
+      "match": "\\b(component|singleton|struct|enum|flags|union|bitset|input|signal|event|global|asset|import|using|abstract|synced|server|client|local|remote|nothashed)\\b",
+      "name": "keyword.control.qtn"
+    },
+    {
+      "match": "\\b(list|List|dictionary|Dictionary|hash_set|HashSet|array|Array|asset_ref|AssetRef|button|Button|entity_ref|EntityRef|player_ref|PlayerRef|bool|Bool|Boolean|byte|Byte|sbyte|SByte|short|Short|ushort|UShort|int|Int|Int32|uint|UInt|UInt32|long|Long|ulong|ULong|UInt64|FP|FPVector2|FPVector3|FPMatrix|FPQuaternion|LayerMask|QString|QStringUtf8)\\b",
+      "name": "storage.type.qtn"
+    },
+    {
+      "match": "\\b\\d+(?:\\.\\d+)?(?:[fF])?\\b|\\b0[xX][0-9a-fA-F]+\\b",
+      "name": "constant.numeric.qtn"
+    },
+    {
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b(?=\\s*\\{)",
+      "name": "entity.name.type.qtn"
+    },
+    {
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b(?=\\s*\\()",
+      "name": "entity.name.function.qtn"
+    },
+    {
+      "match": "[{}()\\[\\]<>]",
+      "name": "punctuation.section.block.qtn"
+    },
+    {
+      "match": "[;:,.*=?]",
+      "name": "punctuation.separator.qtn"
+    }
+  ]
+}
