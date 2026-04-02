@@ -1,9 +1,12 @@
 #include "ast.h"
 
-namespace qtn {
+namespace qtn
+{
 
-std::string TypeExpr::toString() const {
-    switch (kind) {
+std::string TypeExpr::toString() const
+{
+    switch (kind)
+    {
     case Kind::Named:
         return name;
     case Kind::Pointer:
@@ -16,14 +19,18 @@ std::string TypeExpr::toString() const {
         return "list<" + (args.empty() ? "" : args[0].toString()) + ">";
     case Kind::HashSet:
         return "hash_set<" + (args.empty() ? "" : args[0].toString()) + ">";
-    case Kind::Array: {
+    case Kind::Array:
+    {
         std::string s = "array<" + (args.empty() ? "" : args[0].toString()) + ">";
-        if (arraySize) s += "[" + *arraySize + "]";
+        if (arraySize)
+            s += "[" + *arraySize + "]";
         return s;
     }
-    case Kind::Dictionary: {
+    case Kind::Dictionary:
+    {
         std::string s = "dictionary<";
-        if (args.size() >= 2) s += args[0].toString() + ", " + args[1].toString();
+        if (args.size() >= 2)
+            s += args[0].toString() + ", " + args[1].toString();
         s += ">";
         return s;
     }
@@ -33,30 +40,48 @@ std::string TypeExpr::toString() const {
     return "?";
 }
 
-std::string Node::kindName() const {
-    switch (kind) {
-    case Kind::Component:  return "component";
-    case Kind::Struct:     return "struct";
-    case Kind::Enum:       return "enum";
-    case Kind::Flags:      return "flags";
-    case Kind::Union:      return "union";
-    case Kind::Bitset:     return "bitset";
-    case Kind::Input:      return "input";
-    case Kind::Signal:     return "signal";
-    case Kind::Event:      return "event";
-    case Kind::Global:     return "global";
-    case Kind::Asset:      return "asset";
-    case Kind::Import:     return "import";
-    case Kind::Using:      return "using";
-    case Kind::Directive:  return "directive";
+std::string Node::kindName() const
+{
+    switch (kind)
+    {
+    case Kind::Component:
+        return "component";
+    case Kind::Struct:
+        return "struct";
+    case Kind::Enum:
+        return "enum";
+    case Kind::Flags:
+        return "flags";
+    case Kind::Union:
+        return "union";
+    case Kind::Bitset:
+        return "bitset";
+    case Kind::Input:
+        return "input";
+    case Kind::Signal:
+        return "signal";
+    case Kind::Event:
+        return "event";
+    case Kind::Global:
+        return "global";
+    case Kind::Asset:
+        return "asset";
+    case Kind::Import:
+        return "import";
+    case Kind::Using:
+        return "using";
+    case Kind::Directive:
+        return "directive";
     }
     return "?";
 }
 
-bool TranslationUnit::hasErrors() const {
-    for (auto& d : diags)
-        if (d.level == DiagLevel::Error) return true;
+bool TranslationUnit::hasErrors() const
+{
+    for (auto &d : diags)
+        if (d.level == DiagLevel::Error)
+            return true;
     return false;
 }
 
-}
+} // namespace qtn

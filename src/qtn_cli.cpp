@@ -1,16 +1,19 @@
+#include "ast.h"
 #include "lexer.h"
 #include "parser.h"
 #include "reporter.h"
-#include "ast.h"
 
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <cstring>
-#include <cstdlib>
+
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
-static void printHelp(std::ostream& out) {
+
+static void printHelp(std::ostream &out)
+{
     out
         << "qtn - QTN file checker\n"
         << "\n"
@@ -32,37 +35,57 @@ static void printHelp(std::ostream& out) {
         << "  qtn --no-color bad.qtn\n";
 }
 
-static std::string escJson(const std::string& s) {
+static std::string escJson(const std::string &s)
+{
     std::string o;
     o.reserve(s.size() + 4);
-    for (unsigned char c : s) {
-        if      (c == '"')  o += "\\\"";
-        else if (c == '\\') o += "\\\\";
-        else if (c == '\n') o += "\\n";
-        else if (c == '\r') o += "\\r";
-        else if (c == '\t') o += "\\t";
-        else if (c < 0x20) { char b[8]; std::snprintf(b,8,"\\u%04x",c); o+=b; }
-        else o += (char)c;
+    for (unsigned char c : s)
+    {
+        if (c == '"')
+            o += "\\\"";
+        else if (c == '\\')
+            o += "\\\\";
+        else if (c == '\n')
+            o += "\\n";
+        else if (c == '\r')
+            o += "\\r";
+        else if (c == '\t')
+            o += "\\t";
+        else if (c < 0x20)
+        {
+            char b[8];
+            std::snprintf(b, 8, "\\u%04x", c);
+            o += b;
+        }
+        else
+            o += (char)c;
     }
     return o;
 }
 
-static std::string readFile(const std::string& path, bool& ok) {
+static std::string readFile(const std::string &path, bool &ok)
+{
     std::ifstream f(path, std::ios::in | std::ios::binary);
-    if (!f) { ok = false; return {}; }
+    if (!f)
+    {
+        ok = false;
+        return {};
+    }
     std::ostringstream ss;
     ss << f.rdbuf();
     ok = true;
     return ss.str();
 }
 
-static qtn::TranslationUnit processSource(const std::string& src, const std::string& filename) {
+static qtn::TranslationUnit processSource(const std::string &src, const std::string &filename)
+{
     qtn::Lexer lex(src, filename);
     auto tokens = lex.tokenize();
 
     qtn::TranslationUnit lexTu;
     lexTu.filename = filename;
-    for (auto& d : lex.diags()) lexTu.diags.push_back(d);
+    for (auto &d : lex.diags())
+        lexTu.diags.push_back(d);
 
     qtn::Parser parser(std::move(tokens), filename);
     auto tu = parser.parse();
@@ -70,19 +93,31 @@ static qtn::TranslationUnit processSource(const std::string& src, const std::str
     return tu;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     bool jsonMode = false;
-    bool color    = true;
+    bool color = true;
     std::vector<std::string> files;
 
-    for (int i = 1; i < argc; ++i) {
-        if (std::strcmp(argv[i], "--json") == 0)     { jsonMode = true; continue; }
-        if (std::strcmp(argv[i], "--no-color") == 0) { color = false;   continue; }
-        if (std::strcmp(argv[i], "--help") == 0 || std::strcmp(argv[i], "-h") == 0) {
+    for (int i = 1; i < argc; ++i)
+    {
+        if (std::strcmp(argv[i], "--json") == 0)
+        {
+            jsonMode = true;
+            continue;
+        }
+        if (std::strcmp(argv[i], "--no-color") == 0)
+        {
+            color = false;
+            continue;
+        }
+        if (std::strcmp(argv[i], "--help") == 0 || std::strcmp(argv[i], "-h") == 0)
+        {
             printHelp(std::cout);
             return 0;
         }
-        if (argv[i][0] == '-') {
+        if (argv[i][0] == '-')
+        {
             std::cerr << "qtn: unknown option '" << argv[i] << "'\n";
             std::cerr << "Try 'qtn --help' for usage.\n";
             return 1;
@@ -90,21 +125,26 @@ int main(int argc, char* argv[]) {
         files.push_back(argv[i]);
     }
 
-    if (files.empty()) {
+    if (files.empty())
+    {
         printHelp(std::cerr);
         return 1;
     }
 
     int exitCode = 0;
 
-    if (jsonMode) {
+    if (jsonMode)
+    {
         bool first = true;
         std::cout << "[\n";
-        for (const auto& path : files) {
+        for (const auto &path : files)
+        {
             bool ok;
             auto src = readFile(path, ok);
-            if (!ok) {
-                if (!first) std::cout << ",\n";
+            if (!ok)
+            {
+                if (!first)
+                    std::cout << ",\n";
                 std::cout << "  {\"level\":\"error\",\"file\":\"" << escJson(path)
                           << "\",\"line\":0,\"column\":0,"
                           << "\"message\":\"cannot open file\"}";
@@ -113,32 +153,40 @@ int main(int argc, char* argv[]) {
                 continue;
             }
             auto tu = processSource(src, path);
-            if (tu.hasErrors()) exitCode = 1;
+            if (tu.hasErrors())
+                exitCode = 1;
 
-            for (const auto& d : tu.diags) {
-                if (!first) std::cout << ",\n";
+            for (const auto &d : tu.diags)
+            {
+                if (!first)
+                    std::cout << ",\n";
                 std::cout << "  {\n"
-                          << "    \"level\": \""   << (d.level == qtn::DiagLevel::Error ? "error" : "warning") << "\",\n"
-                          << "    \"file\": \""    << escJson(d.loc.file) << "\",\n"
-                          << "    \"line\": "      << d.loc.line   << ",\n"
-                          << "    \"column\": "    << d.loc.column << ",\n"
+                          << "    \"level\": \"" << (d.level == qtn::DiagLevel::Error ? "error" : "warning") << "\",\n"
+                          << "    \"file\": \"" << escJson(d.loc.file) << "\",\n"
+                          << "    \"line\": " << d.loc.line << ",\n"
+                          << "    \"column\": " << d.loc.column << ",\n"
                           << "    \"message\": \"" << escJson(d.message) << "\"\n"
                           << "  }";
                 first = false;
             }
         }
         std::cout << "\n]\n";
-    } else {
-        for (const auto& path : files) {
+    }
+    else
+    {
+        for (const auto &path : files)
+        {
             bool ok;
             auto src = readFile(path, ok);
-            if (!ok) {
+            if (!ok)
+            {
                 std::cerr << "qtn: cannot open '" << path << "'\n";
                 exitCode = 1;
                 continue;
             }
             auto tu = processSource(src, path);
-            if (tu.hasErrors()) exitCode = 1;
+            if (tu.hasErrors())
+                exitCode = 1;
             qtn::printDiagnostics(tu, std::cerr, color);
             if (!tu.diags.empty())
                 std::cerr << path << ": " << qtn::diagSummary(tu) << "\n";

@@ -3,7 +3,8 @@
 #include <ostream>
 #include <string>
 
-namespace qtn {
+namespace qtn
+{
 
 void printDiagnostics(const TranslationUnit &tu, std::ostream &out,
                       bool color = true);
